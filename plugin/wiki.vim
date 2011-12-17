@@ -21,4 +21,42 @@ endif
 if !exists('g:wiki_index')
     let g:wiki_index = expand("$HOME") . "/.vim/wiki/start.txt"
 endif
+if !exists('g:wiki_file_browser_plugin')
+    let g:wiki_file_browser_plugin = 'NERDTree'
+endif
+
+let g:wiki_error = 0
 " }}}
+
+python <<EOF
+import os
+
+wiki_index = vim.eval('g:wiki_index')
+wiki_dir, wiki_file = os.path.split(wiki_index)
+
+if not os.path.exists(wiki_dir):
+    os.makedirs(wiki_dir)
+elif not os.path.isdir(wiki_dir):
+    vim.command('echo "%s in not a directory, wiki can not work!"' % wiki_dir)
+    vim.command('let g:wiki_error = 1')
+
+vim.command('let g:wiki_dir = "%s"' % wiki_dir)
+EOF
+
+function! s:WikiChangeDir()
+    exec 'cd ' . g:wiki_dir
+endfunction
+
+function! WikiOpenIndex()
+    call s:WikiChangeDir()
+    exec join(['vi', g:wiki_index], ' ')
+endfunction
+
+function! WikiOpen()
+    try
+        exec join([g:wiki_file_browser_plugin, g:wiki_dir], ' ')
+        call s:WikiChangeDir()
+    catch
+        echo "NERDtree not found pleas. install NERDTree plugin"
+    endtry
+endfunction
