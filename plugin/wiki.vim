@@ -27,7 +27,7 @@ endif
 
 let g:wiki_error = 0
 " }}}
-
+" Create and Scan Wiki Index {{{
 python <<EOF
 import os
 
@@ -46,17 +46,17 @@ vim.command('let g:wiki_file_ext = "%s"' % wiki_f_ext)
 
 vim.command('autocmd BufNewFile,BufRead %s/* set ft=wiki' % wiki_dir)
 EOF
-
-function! s:WikiChangeDir()
+" }}}
+function! s:WikiChangeDir() " {{{
     exec 'cd ' . g:wiki_dir
 endfunction
-
-function! s:WikiOpenIndex()
+" }}}
+function! s:WikiOpenIndex() " {{{
     call s:WikiChangeDir()
     exec join(['vi', g:wiki_index], ' ')
 endfunction
-
-function! s:WikiOpen()
+" }}}
+function! s:WikiOpen() " {{{
     try
         exec join([g:wiki_file_browser_plugin, g:wiki_dir], ' ')
         call s:WikiChangeDir()
@@ -64,8 +64,8 @@ function! s:WikiOpen()
         echo "NERDtree not found pleas. install NERDTree plugin"
     endtry
 endfunction
-
-function! Wiki_Get_Fold_Level(lnum)
+" }}}
+function! Wiki_Get_Fold_Level(lnum) " {{{
     let line = getline(a:lnum)
 
     if line =~ '^====='
@@ -84,8 +84,8 @@ function! Wiki_Get_Fold_Level(lnum)
         return '='
     endif
 endfunction
-
-function Wiki_Fold_Text()
+" }}}
+function! Wiki_Fold_Text() " {{{
     let line = getline(v:foldstart)
 
     if line =~ '^====='
@@ -112,7 +112,7 @@ function Wiki_Fold_Text()
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount) - 7
     return line . ' … '. level . repeat(" ",fillcharcount) . foldedlinecount . ' '
 endfunction
-
+" }}}
 function! wiki#Open() " {{{
     call s:WikiOpen()
 endfunction
