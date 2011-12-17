@@ -51,12 +51,12 @@ function! s:WikiChangeDir()
     exec 'cd ' . g:wiki_dir
 endfunction
 
-function! WikiOpenIndex()
+function! s:WikiOpenIndex()
     call s:WikiChangeDir()
     exec join(['vi', g:wiki_index], ' ')
 endfunction
 
-function! WikiOpen()
+function! s:WikiOpen()
     try
         exec join([g:wiki_file_browser_plugin, g:wiki_dir], ' ')
         call s:WikiChangeDir()
@@ -64,3 +64,15 @@ function! WikiOpen()
         echo "NERDtree not found pleas. install NERDTree plugin"
     endtry
 endfunction
+
+function! wiki#Open() " {{{
+    call s:WikiOpen()
+endfunction
+" }}}
+function! wiki#OpenIndex() " {{{
+    call s:WikiOpenIndex()
+endfunction
+" }}}
+
+command! -nargs=0 WikiOpen call wiki#Open()
+command! -nargs=0 WikiOpenIndex call wiki#OpenIndex()
