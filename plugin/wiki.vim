@@ -43,6 +43,8 @@ elif not os.path.isdir(wiki_dir):
 
 vim.command('let g:wiki_dir = "%s"' % wiki_dir)
 vim.command('let g:wiki_file_ext = "%s"' % wiki_f_ext)
+
+vim.command('autocmd BufNewFile,BufRead %s/* set ft=wiki' % wiki_dir)
 EOF
 
 function! s:WikiChangeDir()
