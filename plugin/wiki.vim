@@ -33,6 +33,7 @@ import os
 
 wiki_index = vim.eval('g:wiki_index')
 wiki_dir, wiki_file = os.path.split(wiki_index)
+wiki_f_name, wiki_f_ext = os.path.splitext(wiki_file)
 
 if not os.path.exists(wiki_dir):
     os.makedirs(wiki_dir)
@@ -41,6 +42,7 @@ elif not os.path.isdir(wiki_dir):
     vim.command('let g:wiki_error = 1')
 
 vim.command('let g:wiki_dir = "%s"' % wiki_dir)
+vim.command('let g:wiki_file_ext = "%s"' % wiki_f_ext)
 EOF
 
 function! s:WikiChangeDir()
