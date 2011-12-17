@@ -65,6 +65,54 @@ function! s:WikiOpen()
     endtry
 endfunction
 
+function! Wiki_Get_Fold_Level(lnum)
+    let line = getline(a:lnum)
+
+    if line =~ '^====='
+        return '>1'
+    elseif line =~ '^===='
+        return '>2'
+    elseif line =~ '^==='
+        return 3
+    elseif line =~ '^=='
+        return 4
+    elseif g:wiki_enable_fold_code && line =~ '<code.\{-}>'
+        return 'a1'
+    elseif g:wiki_enable_fold_code && line =~ '</code>'
+        return 's1'
+    else
+        return '='
+    endif
+endfunction
+
+function Wiki_Fold_Text()
+    let line = getline(v:foldstart)
+
+    if line =~ '^====='
+        let level = 5
+    elseif line =~ '^===='
+        let level = 4
+    elseif line =~ '^==='
+        let level = 3
+    elseif line =~ '^=='
+        let level = 2
+    else
+        let level = ''
+    endif
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    if line != ''
+        let line = substitute(line, '=', '', 'g')
+        let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    endif
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount) - 7
+    return line . ' … '. level . repeat(" ",fillcharcount) . foldedlinecount . ' '
+endfunction
+
 function! wiki#Open() " {{{
     call s:WikiOpen()
 endfunction
