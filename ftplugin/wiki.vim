@@ -1,3 +1,18 @@
+
+" Global variables {{{
+if !exists('g:wiki_enable_fold')
+    let g:wiki_enable_fold = 1
+endif
+
+if !exists('g:wiki_enable_fold_code')
+    let g:wiki_enable_fold_code = 0
+endif
+
+if !exists('g:wiki_enable_set_fold_text')
+    let g:wiki_enable_set_fold_text = 1
+endif
+" }}}
+
 let b:current_syntax = ''
 unlet b:current_syntax
 syntax include @WIKI syntax/wiki.vim
@@ -36,30 +51,28 @@ vim.command("hi link Snip SpecialComment")
 vim.command("let b:current_syntax = 'wiki%s.'" % (langs_str.replace(', ', '.')))
 EOF
 
-setlocal foldmethod=expr
-setlocal foldexpr=Wiki_Fold(v:lnum)
-setlocal foldtext=Wiki_Fold_Text()
-
-
-function! Wiki_Fold(lnum)
+" Fold Functions {{{
+function! Get_Wiki_Fold_Level(lnum) " {{{
     let line = getline(a:lnum)
 
     if line =~ '^====='
         return '>1'
-    endif
-    if line =~ '^===='
+    elseif line =~ '^===='
         return '>2'
-    endif
-    if line =~ '^==='
+    elseif line =~ '^==='
         return 3
-    endif
-    if line =~ '^=='
+    elseif line =~ '^=='
         return 4
+    elseif line =~ '<code.\{-}>'
+        return 'a1'
+    elseif line =~ '</code>'
+        return 's1'
+    else
+        return '='
     endif
-    return '='
 endfunction
-
-function Wiki_Fold_Text()
+" }}}
+function Wiki_Fold_Text() " {{{
     let line = getline(v:foldstart)
 
     if line =~ '^====='
@@ -70,6 +83,8 @@ function Wiki_Fold_Text()
         let level = 3
     elseif line =~ '^=='
         let level = 2
+    else
+        let level = ''
     endif
 
     let nucolwidth = &fdc + &number * &numberwidth
@@ -77,8 +92,22 @@ function Wiki_Fold_Text()
     let foldedlinecount = v:foldend - v:foldstart
 
     " expand tabs into spaces
-    let line = substitute(line, '=', '', 'g')
-    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    if line != ''
+        let line = substitute(line, '=', '', 'g')
+        let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    endif
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount) - 7
     return line . ' … '. level . repeat(" ",fillcharcount) . foldedlinecount . ' '
 endfunction
+" }}}
+" }}}
+" Active Fold {{{
+if g:wiki_enable_fold
+    setlocal foldmethod=expr
+    setlocal foldexpr=Get_Wiki_Fold_Level(v:lnum)
+endif
+
+if g:wiki_enable_set_fold_text
+    setlocal foldtext=Wiki_Fold_Text()
+endif
+" }}}
