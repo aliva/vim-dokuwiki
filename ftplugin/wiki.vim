@@ -67,9 +67,9 @@ EOF
             return 3
         elseif line =~ '^=='
             return 4
-        elseif line =~ '<code.\{-}>'
+        elseif g:wiki_enable_fold_code && line =~ '<code.\{-}>'
             return 'a1'
-        elseif line =~ '</code>'
+        elseif g:wiki_enable_fold_code && line =~ '</code>'
             return 's1'
         else
             return '='
