@@ -67,7 +67,6 @@ function! s:DokuWIkiOpen() " {{{
 endfunction
 " }}}
 function! DokuWiki_Get_Fold_Level(lnum) " {{{
-    set ft=vim
     let line = getline(a:lnum)
 
     if line =~ '^====='
@@ -115,6 +114,7 @@ function! DokuWiki_Fold_Text() " {{{
     return line . ' … '. level . repeat(" ",fillcharcount) . foldedlinecount . ' '
 endfunction
 " }}}
+
 function! dokuwiki#Open() " {{{
     call s:DokuWIkiOpen()
 endfunction
