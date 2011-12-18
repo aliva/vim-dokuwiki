@@ -1,7 +1,7 @@
 
 " Plugin guard {{{
 if exists('g:dokuwiki_enable')
-    finsih
+    finish
 endif
 let g:dokuwiki_enable = 1
 " }}}
@@ -66,7 +66,8 @@ function! s:DokuWIkiOpen() " {{{
     endtry
 endfunction
 " }}}
-function! DokuWIki_Get_Fold_Level(lnum) " {{{
+function! DokuWiki_Get_Fold_Level(lnum) " {{{
+    set ft=vim
     let line = getline(a:lnum)
 
     if line =~ '^====='
@@ -86,7 +87,7 @@ function! DokuWIki_Get_Fold_Level(lnum) " {{{
     endif
 endfunction
 " }}}
-function! DokuWIki_Fold_Text() " {{{
+function! DokuWiki_Fold_Text() " {{{
     let line = getline(v:foldstart)
 
     if line =~ '^====='
