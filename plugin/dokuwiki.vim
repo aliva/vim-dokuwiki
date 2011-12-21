@@ -16,7 +16,7 @@ if !exists('g:dokuwiki_enable_set_fold_text')
     let g:dokuwiki_enable_set_fold_text = 1
 endif
 if !exists('g:dokuwiki_inline_highlight')
-    let g:dokuwiki_inline_highlight = ['c', 'perl']
+    let g:dokuwiki_inline_highlight = ['vim']
 endif
 if !exists('g:dokuwiki_index')
     let g:dokuwiki_index = expand("$HOME") . "/.vim/wiki/start.txt"
@@ -74,9 +74,9 @@ function! DokuWiki_Get_Fold_Level(lnum) " {{{
     elseif line =~ '^===='
         return '>2'
     elseif line =~ '^==='
-        return 3
+        return '>3'
     elseif line =~ '^=='
-        return 4
+        return '>4'
     elseif g:dokuwiki_enable_fold_code && line =~ '<code.\{-}>'
         return 'a1'
     elseif g:dokuwiki_enable_fold_code && line =~ '</code>'
