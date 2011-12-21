@@ -1,3 +1,5 @@
+About:
+    use vim as your personal wiki using dokuwiki syntax
 
 Download:
     git clone git@bitbucket.org:aliva/vim-dokuwiki.git
@@ -5,3 +7,6 @@ Download:
 Files:
     syntax/wiki.vim
         https://github.com/nblock/vim-dokuwiki 
+
+Docs:
+    the documentation is formatted as a wiki page so you can test plugin with docs
