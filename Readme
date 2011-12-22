@@ -4,6 +4,9 @@ About:
 Download:
     git clone git@bitbucket.org:aliva/vim-dokuwiki.git
 
+Page on vim scripts:
+    http://www.vim.org/scripts/script.php?script_id=3853
+
 Files:
     syntax/wiki.vim
         https://github.com/nblock/vim-dokuwiki 
